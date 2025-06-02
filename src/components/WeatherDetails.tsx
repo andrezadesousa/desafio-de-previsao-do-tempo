@@ -34,10 +34,11 @@
 // };
 import React from "react";
 import styled from "styled-components";
+import type { WeatherData } from "../utils/types";
 
 interface WeatherDetailsProps {
   cityName: string;
-  data: any; // dados da API OpenWeather
+  data: WeatherData | null; // null ou os dados da API
 }
 
 const Container = styled.div`
@@ -66,12 +67,14 @@ const Icon = styled.img`
   height: 80px;
 `;
 
-const formatTime = (unix: number) =>
-  new Date(unix * 1000).toLocaleTimeString("pt-BR", {
+const formatTime = (unix: number | undefined) => {
+  if (!unix) return "-";
+  return new Date(unix * 1000).toLocaleTimeString("pt-BR", {
     timeZone: "America/Sao_Paulo",
     hour: "2-digit",
     minute: "2-digit",
   });
+};
 
 export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
   cityName,
@@ -79,25 +82,30 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
 }) => {
   if (!data) return null;
 
-  const current = data.current;
-  const weather = current.weather[0];
+  const weather = data.weather[0];
+  const { temp, feels_like, temp_min, temp_max, humidity } = data.main;
+  const { sunrise, sunset } = data.sys;
 
   return (
     <Container>
       <Title>{cityName}</Title>
-      <Icon
-        src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
-        alt={weather.description}
-      />
-      <div>{weather.description}</div>
+      {weather && (
+        <>
+          <Icon
+            src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+            alt={weather.description}
+          />
+          <div>{weather.description}</div>
+        </>
+      )}
       <InfoGrid>
-        <InfoItem>Temperatura: {current.temp}°C</InfoItem>
-        <InfoItem>Sensação térmica: {current.feels_like}°C</InfoItem>
-        <InfoItem>Min: {data.daily[0].temp.min}°C</InfoItem>
-        <InfoItem>Max: {data.daily[0].temp.max}°C</InfoItem>
-        <InfoItem>Umidade: {current.humidity}%</InfoItem>
-        <InfoItem>Nascer do sol: {formatTime(data.daily[0].sunrise)}</InfoItem>
-        <InfoItem>Pôr do sol: {formatTime(data.daily[0].sunset)}</InfoItem>
+        <InfoItem>Temperatura: {temp}°C</InfoItem>
+        <InfoItem>Sensação térmica: {feels_like}°C</InfoItem>
+        <InfoItem>Mínima: {temp_min}°C</InfoItem>
+        <InfoItem>Máxima: {temp_max}°C</InfoItem>
+        <InfoItem>Umidade: {humidity}%</InfoItem>
+        <InfoItem>Nascer do sol: {formatTime(sunrise)}</InfoItem>
+        <InfoItem>Pôr do sol: {formatTime(sunset)}</InfoItem>
       </InfoGrid>
     </Container>
   );
