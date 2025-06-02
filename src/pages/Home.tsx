@@ -142,7 +142,7 @@ export const Home = () => {
       <MainContent>
         {!selectedCity ? (
           <WelcomeMessage>
-            <h1>Choose a city to view the forecastompleta</h1>
+            <h1>Choose a city to view the forecasto</h1>
             <p>Explore the real-time weather of major Brazilian cities</p>
           </WelcomeMessage>
         ) : isLoading ? (
