@@ -3,7 +3,6 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-// Import Lucide icons
 import { Search, X, Sun, Moon, Clock } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { darkTheme, lightTheme } from "../styles/theme";

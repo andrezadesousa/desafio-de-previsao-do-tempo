@@ -2,7 +2,6 @@
 
 import type React from "react";
 import styled, { keyframes } from "styled-components";
-// Import Lucide icon
 import { MapPin } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { lightTheme, darkTheme } from "../styles/theme";

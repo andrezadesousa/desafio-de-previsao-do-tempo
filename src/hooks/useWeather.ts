@@ -17,6 +17,6 @@ export const useWeather = (lat: number, lon: number) => {
       return data;
     },
     enabled: lat !== 0 && lon !== 0,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 10,
   });
 };

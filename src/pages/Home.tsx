@@ -142,10 +142,8 @@ export const Home = () => {
       <MainContent>
         {!selectedCity ? (
           <WelcomeMessage>
-            <h1>Escolha uma cidade para visualizar a previsão completa</h1>
-            <p>
-              Explore o clima em tempo real das principais cidades brasileiras
-            </p>
+            <h1>Choose a city to view the forecastompleta</h1>
+            <p>Explore the real-time weather of major Brazilian cities</p>
           </WelcomeMessage>
         ) : isLoading ? (
           <LoadingContainer>

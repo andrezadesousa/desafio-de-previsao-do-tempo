@@ -266,9 +266,7 @@ export const WeatherDetails: React.FC<WeatherDetailsProps> = ({
 
           <DetailCard isDark={isDark}>
             <DetailHeader>
-              {/* Note: No direct equivalent icon for humidity in lucide, so keeping empty or you can choose a droplet or similar */}
               <DetailIcon>
-                {/* Use Thermometer as placeholder or import Droplet from lucide-react if wanted */}
                 <Thermometer />
               </DetailIcon>
               <DetailLabel isDark={isDark}>Umidade</DetailLabel>
