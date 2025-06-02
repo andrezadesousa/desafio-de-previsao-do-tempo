@@ -1,4 +1,4 @@
-# 🌆 City Cards App
+# 🌆 Previsão do tempo App
 
 Uma aplicação estilizada em React que exibe cards interativos de cidades, com suporte a temas claro e escuro, e animações suaves usando styled-components.
 
