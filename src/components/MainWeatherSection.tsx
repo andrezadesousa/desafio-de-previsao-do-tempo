@@ -16,9 +16,8 @@ import {
   TempRange,
   WeatherCondition,
   WeatherIcon,
-  WelcomeCard,
-  WelcomeText,
 } from "./styles/MainWeatherSection.styles";
+import { WelcomeCard, WelcomeText } from "./styles/TodayHighlights.styles";
 
 const MainWeatherSection = () => {
   const selectedCity = useSelector(

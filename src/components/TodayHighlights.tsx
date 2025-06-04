@@ -3,8 +3,8 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { useQuery } from "@tanstack/react-query";
-import { fetchWeatherData, WeatherData } from "../services/weatherApi";
-import { Droplets, Wind, Sun, Eye, Sunrise, Sunset, Clock } from "lucide-react";
+import { fetchWeatherData } from "../services/weatherApi";
+import { Droplets, Wind, Sun, Eye } from "lucide-react";
 import {
   HighlightsContainer,
   HighlightsTitle,
@@ -14,9 +14,6 @@ import {
   CardValue,
   CardUnit,
   CardIcon,
-  SunCard,
-  SunTime,
-  SunLabel,
   WelcomeCard,
   WelcomeText,
 } from "./styles/TodayHighlights.styles";
@@ -26,47 +23,18 @@ const TodayHighlights = () => {
     (state: RootState) => state.weather.selectedCity
   );
 
-  const {
-    data: weatherData,
-    isLoading,
-    error,
-  } = useQuery<WeatherData>({
+  const { data: weatherData } = useQuery({
     queryKey: ["weather", selectedCity],
     queryFn: () => fetchWeatherData(selectedCity!),
     enabled: !!selectedCity,
   });
 
-  const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const calculateDayLength = (sunrise: number, sunset: number) => {
-    const diff = sunset - sunrise;
-    const hours = Math.floor(diff / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    return `${hours}h ${minutes}m`;
-  };
-
-  if (isLoading) {
+  if (!weatherData) {
     return (
       <HighlightsContainer>
-        <HighlightsTitle>Today Highlight</HighlightsTitle>
+        <HighlightsTitle>Destaques de Hoje</HighlightsTitle>
         <WelcomeCard>
-          <WelcomeText>Carregando...</WelcomeText>
-        </WelcomeCard>
-      </HighlightsContainer>
-    );
-  }
-
-  if (error || !weatherData) {
-    return (
-      <HighlightsContainer>
-        <HighlightsTitle>Today Highlight</HighlightsTitle>
-        <WelcomeCard>
-          <WelcomeText>Selecione uma cidade válida</WelcomeText>
+          <WelcomeText>Selecione uma cidade</WelcomeText>
         </WelcomeCard>
       </HighlightsContainer>
     );
@@ -74,69 +42,43 @@ const TodayHighlights = () => {
 
   return (
     <HighlightsContainer>
-      <HighlightsTitle>Today Highlight</HighlightsTitle>
+      <HighlightsTitle>Destaques de Hoje</HighlightsTitle>
       <HighlightsGrid>
-        <HighlightCard>
+        <HighlightCard $delay={0}>
           <CardIcon>
-            <Droplets size={20} color="#60a5fa" />
+            <Droplets size={24} color="#ffc107" />
           </CardIcon>
-          <CardTitle>Chance of Rain</CardTitle>
+          <CardTitle>Chance de Chuva</CardTitle>
           <CardValue>
-            {weatherData.weather[0]?.main === "Rain" ? "Alta" : "Baixa"}
+            {weatherData.weather[0].main === "Rain" ? "Alta" : "Baixa"}
           </CardValue>
         </HighlightCard>
 
-        <HighlightCard>
+        <HighlightCard $delay={0.1}>
           <CardIcon>
-            <Sun size={20} color="#f59e0b" />
+            <Sun size={24} color="#ffc107" />
           </CardIcon>
-          <CardTitle>UV Index</CardTitle>
+          <CardTitle>Índice UV</CardTitle>
           <CardValue>5</CardValue>
           <CardUnit>Moderado</CardUnit>
         </HighlightCard>
 
-        <HighlightCard>
+        <HighlightCard $delay={0.2}>
           <CardIcon>
-            <Wind size={20} color="#10b981" />
+            <Wind size={24} color="#ffc107" />
           </CardIcon>
-          <CardTitle>Vento</CardTitle>
-          <CardValue>{(weatherData.wind?.speed ?? 0).toFixed(1)}</CardValue>
+          <CardTitle>Velocidade do Vento</CardTitle>
+          <CardValue>{weatherData.wind?.speed || 0}</CardValue>
           <CardUnit>m/s</CardUnit>
         </HighlightCard>
 
-        <HighlightCard>
+        <HighlightCard $delay={0.3}>
           <CardIcon>
-            <Eye size={20} color="#8b5cf6" />
+            <Eye size={24} color="#ffc107" />
           </CardIcon>
           <CardTitle>Umidade</CardTitle>
-          <CardValue>{weatherData.main?.humidity ?? "N/A"}</CardValue>
+          <CardValue>{weatherData.main.humidity}</CardValue>
           <CardUnit>%</CardUnit>
-        </HighlightCard>
-
-        <SunCard>
-          <div>
-            <Sunrise size={18} color="#f59e0b" />
-            <SunLabel>Nascer do Sol</SunLabel>
-            <SunTime>{formatTime(weatherData.sys.sunrise)}</SunTime>
-          </div>
-          <div>
-            <Sunset size={18} color="#f97316" />
-            <SunLabel>Pôr do Sol</SunLabel>
-            <SunTime>{formatTime(weatherData.sys.sunset)}</SunTime>
-          </div>
-        </SunCard>
-
-        <HighlightCard>
-          <CardIcon>
-            <Clock size={20} color="#06b6d4" />
-          </CardIcon>
-          <CardTitle>Duração do Dia</CardTitle>
-          <CardValue>
-            {calculateDayLength(
-              weatherData.sys.sunrise,
-              weatherData.sys.sunset
-            )}
-          </CardValue>
         </HighlightCard>
       </HighlightsGrid>
     </HighlightsContainer>
