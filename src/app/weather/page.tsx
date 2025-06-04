@@ -2,14 +2,13 @@
 
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "./context/ThemeContext";
-import WeatherApp from "./components/WeatherApp";
-import { store } from "./store/store";
-import "./global/global.css";
+import { store } from "@/store/store";
+import WeatherApp from "@/components/WeatherApp";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const queryClient = new QueryClient();
 
-function App() {
+export default function WeatherPage() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -20,5 +19,3 @@ function App() {
     </Provider>
   );
 }
-
-export default App;
